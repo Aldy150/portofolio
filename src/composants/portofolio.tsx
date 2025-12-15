@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TextType from "../composants/textType.tsx";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-//import { div, image, video } from 'motion/react-client';
 // Enregistrer le plugin ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,39 +32,17 @@ const PROJECTS = [
   }
 ];
 
-const CURRENT_PROJECT = [
-  {
-    title: "Logimonth",
-    description:
-      "Ce projet en cours est une application qui vise à automatiser les tâches répétitives des commerçants en général. Ils auront la possibilité de gérer les clients, le nombre de ventes et d'achats. Il y aura également un tableau de bord pour visualiser tout ce trafic.",
-    video:"/videos/video1.mp4"
-  },
-];
-
-const vagoo = [
-  {
-    title: "Vagoo",
-    description: `Vagoo est une plateforme de location de véhicules conçue pour simplifier la mise en relation entre les propriétaires de véhicules et les clients.
-Elle permet aux utilisateurs de consulter les véhicules disponibles, d’obtenir les informations essentielles et d’effectuer une réservation rapide et sécurisée via une interface moderne et intuitive, accessible sur ordinateur et mobile.`,
-    images: [
-      "/images/image5.png",
-      "/images/image6.png",
-      "/images/image7.png",
-      "/images/image8.png",
-    ],
-  },
-];
-
-
-
-
-
+const CURRENT_PROJECT = {
+  title: "Logimonth",
+  description: "Ce projet en cours est une application qui vise à automatiser les tâches répétitives des commerçants en général. Ils auront la possibilité de gérer les clients, le nombre de ventes et d'achats. Il y aura également un tableau de bord pour visualiser tout ce trafic.",
+  image: "/images/I.png"
+};
 
 export default function Portfolio() {
   const [isOpen, setIsOpen] = useState(false); // Déplacer useState ici
   const footerRef = useRef<HTMLDivElement>(null);
 
- 
+  
   useEffect(() => {
     // Animation d'apparition des éléments au défilement
     const fadeElements = gsap.utils.toArray<HTMLElement>('.fade-in');
@@ -131,8 +108,6 @@ export default function Portfolio() {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
-
-  
 
   // Composant de projet réutilisable
   const ProjectSection = ({ project }: { project: typeof PROJECTS[0] }) => (
@@ -344,90 +319,29 @@ export default function Portfolio() {
         ))}
       </section>
 
-{/* Projets en cours */}
-<section className="mt-20 flex flex-col items-center" aria-labelledby="current-projects">
-  <h1
-    id="current-projects"
-    className="text-white text-center text-2xl font-bold fade-in mb-10"
-  >
-    Projets en cours
-  </h1>
+      {/* Projets en cours */}
+      <section className="mt-10 flex flex-col" aria-labelledby="current-projects">
+        <h1 id="current-projects" className="text-white text-center text-2xl font-bold fade-in">Projets en cours</h1>
 
-  {CURRENT_PROJECT.map((project, index) => (
-    <div
-      key={index}
-      className="flex flex-col lg:flex-row justify-between items-center w-full max-w-6xl bg-[#02090e] project-section"
-    >
-      {/* IMAGES */}
-      <div className="flex flex-col gap-6 p-4 lg:w-1/2">
-         <video
-    src={project.video}
-    autoPlay
-    muted
-    loop
-    playsInline
-    className="w-full h-72 lg:h-80 object-cover rounded-lg shadow-2xl shadow-[#064eb9] project-image"
-  />
+        <div className="bg-[#02090e] flex flex-col lg:flex-row gap-8 mt-12 p-6 rounded-lg project-section">
+          {/* Image */}
+          <div className="flex justify-center lg:w-1/2">
+            <img
+              src={CURRENT_PROJECT.image}
+              alt="Aperçu du projet Logimonth"
+              className="w-full max-w-sm lg:max-w-lg h-auto object-cover rounded-md shadow-2xl shadow-[#064eb9] project-image"
+            />
+          </div>
 
-      </div>
-
-      {/* TEXTE */}
-      <div className="flex flex-col gap-4 px-6 lg:w-1/2 justify-center fade-in">
-        <h2 className="text-xl lg:text-2xl font-bold text-[#064eb9]">
-          {project.title}
-        </h2>
-        <p className="text-white text-sm md:text-base text-justify leading-relaxed">
-          {project.description}
-        </p>
-      </div>
-    </div>
-  ))}
-</section>
-
-{/** Projet finalisé */}
-<section className="mt-20 flex flex-col items-center" aria-labelledby="current-projects">
-  <h1
-    id="current-projects"
-    className="text-white text-center text-2xl font-bold fade-in mb-10"
-  >
-    Projets finalisé
-  </h1>
-
-  {vagoo.map((project, index) => (
-    <div
-      key={index}
-      className="flex flex-col lg:flex-row justify-between items-center w-full max-w-6xl bg-[#02090e] project-section"
-    >
- {/* IMAGES */}
-<div className="p-4 lg:w-1/2">
-  <div className="grid grid-cols-2 gap-4">
-    {project.images.map((img: string, index: number) => (
-      <img
-        key={index}
-        src={img}
-        alt={`Image ${index + 1}`}
-        className="w-full h-56 object-cover rounded-lg shadow-md"
-      />
-    ))}
-  </div>
-</div>
-
-
-
-
-      {/* TEXTE */}
-      <div className="flex flex-col gap-4 px-6 lg:w-1/2 justify-center fade-in">
-        <h2 className="text-xl lg:text-2xl font-bold text-[#064eb9]">
-          {project.title}
-        </h2>
-        <p className="text-white text-sm md:text-base text-justify leading-relaxed">
-          {project.description}
-        </p>
-      </div>
-    </div>
-  ))}
-</section>
-
+          {/* Texte */}
+          <div className="flex flex-col gap-3 mt-6 lg:mt-0 text-center lg:text-left items-center lg:items-start justify-center fade-in lg:w-1/2">
+            <h2 className="text-xl lg:text-2xl font-bold text-[#064eb9]">{CURRENT_PROJECT.title}</h2>
+            <p className="text-white text-sm md:text-base text-justify leading-relaxed">
+              {CURRENT_PROJECT.description}
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer 
