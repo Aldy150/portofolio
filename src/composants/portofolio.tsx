@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TextType from "../composants/textType.tsx";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+//import type { video } from 'motion/react-client';
 // Enregistrer le plugin ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,7 +36,7 @@ const PROJECTS = [
 const CURRENT_PROJECT = {
   title: "Logimonth",
   description: "Ce projet en cours est une application qui vise à automatiser les tâches répétitives des commerçants en général. Ils auront la possibilité de gérer les clients, le nombre de ventes et d'achats. Il y aura également un tableau de bord pour visualiser tout ce trafic.",
-  image: "/images/I.png"
+  video: "/videos/video1.mp4"
 };
 
 export default function Portfolio() {
@@ -171,6 +172,20 @@ export default function Portfolio() {
       </div>
     </div>
   );
+
+  // Déclaration simple de vagoo
+const vagoo = [
+  {
+    description: "Vagoo est une plateforme innovante qui connecte les propriétaires de voitures avec des personnes souhaitant louer un véhicule. Grâce à une interface simple et sécurisée, Vagoo facilite la location de voitures entre particuliers.",
+    image: [
+      "/images/image5.png",
+      "/images/image6.png",
+      "/images/image7.png",
+      "/images/image8.png"
+    ]
+  }
+];
+
 
   return (
     <div className="bg-[#070606] min-h-screen">
@@ -320,28 +335,104 @@ export default function Portfolio() {
       </section>
 
       {/* Projets en cours */}
-      <section className="mt-10 flex flex-col" aria-labelledby="current-projects">
-        <h1 id="current-projects" className="text-white text-center text-2xl font-bold fade-in">Projets en cours</h1>
+<section className="mt-10 flex flex-col" aria-labelledby="current-projects">
+  <h1 id="current-projects" className="text-white text-center text-2xl font-bold fade-in">
+    Projets en cours
+  </h1>
 
-        <div className="bg-[#02090e] flex flex-col lg:flex-row gap-8 mt-12 p-6 rounded-lg project-section">
-          {/* Image */}
-          <div className="flex justify-center lg:w-1/2">
-            <img
-              src={CURRENT_PROJECT.image}
-              alt="Aperçu du projet Logimonth"
-              className="w-full max-w-sm lg:max-w-lg h-auto object-cover rounded-md shadow-2xl shadow-[#064eb9] project-image"
-            />
-          </div>
+  <div className="bg-[#02090e] flex flex-col lg:flex-row gap-8 mt-12 p-6 rounded-lg project-section">
+    {/* Vidéo */}
+    <div className="flex justify-center lg:w-1/2">
+      <video
+        src={CURRENT_PROJECT.video}
+        controls
+        autoPlay
+        loop
+        muted
+        className="w-full h-70 max-w-sm lg:max-w-lg object-cover rounded-md shadow-2xl shadow-[#064eb9] project-image"
+      />
+    </div>
 
-          {/* Texte */}
-          <div className="flex flex-col gap-3 mt-6 lg:mt-0 text-center lg:text-left items-center lg:items-start justify-center fade-in lg:w-1/2">
-            <h2 className="text-xl lg:text-2xl font-bold text-[#064eb9]">{CURRENT_PROJECT.title}</h2>
-            <p className="text-white text-sm md:text-base text-justify leading-relaxed">
-              {CURRENT_PROJECT.description}
-            </p>
-          </div>
-        </div>
-      </section>
+    {/* Texte */}
+    <div className="flex flex-col gap-3 mt-6 lg:mt-0 text-center lg:text-left items-center lg:items-start justify-center lg:w-1/2 fade-in">
+      <h2 className="text-xl lg:text-2xl font-bold text-[#064eb9]">
+        {CURRENT_PROJECT.title}
+      </h2>
+      <p className="text-white text-sm md:text-base text-justify leading-relaxed">
+        {CURRENT_PROJECT.description}
+      </p>
+      <div className="mt-3">
+        <button
+          className="bg-[#064eb9] text-white border border-[#064eb9] rounded-lg 
+          px-4 py-2 text-sm font-bold transform hover:scale-105 transition duration-300 
+          hover:text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          aria-label="Commencer un projet similaire"
+        >
+          Commençons un projet
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{/* Projets en cours */}
+<section className="mt-10 flex flex-col" aria-labelledby="completed-projects">
+  <h1 id="completed-projects" className="text-white text-center text-3xl font-extrabold tracking-wide fade-in">
+     Projets Terminés
+  </h1>
+
+  {/* Conteneur principal */}
+  <div className="bg-[#02090e] border border-gray-800/50 flex flex-col lg:flex-row gap-8 md:gap-10 mt-12 p-6 md:p-8 rounded-xl project-section shadow-inner shadow-black/30">
+
+    {/* Galerie d'images */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 lg:w-1/2 justify-items-center">
+      {vagoo[0].image.slice(0, 4).map((img, idx) => (
+        <img
+          key={idx}
+          src={img}
+          alt={`Projet terminé ${idx + 1}`}
+          className={`
+            ${idx === 0 ? 'col-span-1 sm:col-span-2 h-64 sm:h-80 md:h-96' : 'h-48 sm:h-56 md:h-64'} 
+            w-full object-cover rounded-xl transition-transform duration-300 ease-in-out hover:scale-[1.02]
+            shadow-xl shadow-[#064eb9]/50 cursor-pointer
+          `}
+        />
+      ))}
+    </div>
+
+    {/* Texte du projet */}
+    <div className="flex flex-col gap-4 md:gap-6 mt-6 lg:mt-0 text-center lg:text-left items-center lg:items-start justify-center lg:w-1/2 fade-in">
+      <h2 className="text-md md:text-lg lg:text-xl font-bold text-white mb-2">
+        {vagoo[0].description || "Nom du Projet"}
+      </h2>
+
+      {/* Technologies utilisées */}
+      <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+        <span className="text-sm md:text-md font-bold text-red-500">React JS,</span>
+        <span className="text-sm md:text-md font-bold text-red-500">TypeScript,</span>
+        <span className="text-sm md:text-md font-bold text-red-500">TailwindCSS,</span>
+        <span className="text-sm md:text-md font-bold text-red-500">Express JS,</span>
+        <span className="text-sm md:text-md font-bold text-red-500">PostgreSQL</span>
+      </div>
+
+      {/* Bouton Call-to-Action */}
+      <div className="mt-4 md:mt-6">
+        <button
+          className="bg-[#064eb9] text-white border border-[#064eb9] rounded-lg 
+          px-6 md:px-8 py-2 md:py-3 text-sm md:text-base font-bold transition duration-300 ease-in-out 
+          hover:bg-transparent hover:text-[#064eb9] hover:shadow-lg hover:shadow-[#064eb9]/50 
+          focus:outline-none focus:ring-4 focus:ring-[#064eb9]/50"
+          aria-label="Commencer un projet similaire"
+        >
+          Commençons un projet
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
       {/* Footer */}
       <footer 
