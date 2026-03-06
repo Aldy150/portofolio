@@ -22,7 +22,6 @@ const PROJECTS = [
     technologies: ["React JS", "TailwindCSS", "Node.js", "PostgreSQL", "Express.js"],
     image: "/images/E.png",
     category: "Développement web",
-    liveUrl: "https://hgvisiongraphic.com",
     githubUrl: "https://github.com/Aldy150/hg-vision-graphic",
     client: "HG Vision Graphic",
     date: "2024",
@@ -30,7 +29,6 @@ const PROJECTS = [
       "Galerie de projets interactive",
       "Blog avec système de commentaires",
       "Prise de rendez-vous en ligne",
-      "Dashboard administrateur"
     ]
   },
   {
@@ -41,13 +39,11 @@ const PROJECTS = [
     technologies: ["React JS", "TypeScript", "Express JS", "PostgreSQL", "Redux"],
     image: "/images/image5.png",
     category: "Application web",
-    liveUrl: "https://vagoo.com",
     githubUrl: "https://github.com/Aldy150/Vagoo_Plateforme",
     client: "Startup Vagoo",
     date: "2025-2026",
     features: [
-      "Système de réservation en temps réel",
-      "Paiement sécurisé intégré",
+      " Affichage dynamique des véhicules disponibles",
       "Messagerie instantanée",
       "Système d'évaluations"
     ]
@@ -195,7 +191,6 @@ export default function Portfolio() {
               <Github className="w-5 h-5 text-white" />
             </a>
             <a
-              href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-[#064eb9] transition-colors duration-300"
@@ -537,14 +532,6 @@ export default function Portfolio() {
               </div>
               
               <div className="flex gap-4">
-                <a 
-                  href={selectedProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-[#064eb9] text-white text-center px-6 py-3 rounded-lg font-bold hover:bg-white hover:text-[#064eb9] transition-all duration-300"
-                >
-                  Voir le projet
-                </a>
                 <a 
                   href={selectedProject.githubUrl}
                   target="_blank"
