@@ -85,6 +85,9 @@ export default function Accueil() {
 
   const Images3: {imgage: string; description: string}[] = [
     { imgage: "/images/TS.jpg", description: "Typescript" },
+    {imgage:"/images/Python logo.jpeg", description: "Python"},
+    {imgage:"/images/nestjs.jpeg", description: "Nest js"},
+    {imgage:"/images/FastAPI.png",  description: "FastAPI"},
   ];
 
   const cards: {texte: string; objet: string; btn: string; Image: string}[] = [
