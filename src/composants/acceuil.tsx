@@ -4,15 +4,15 @@ import TextType from "../composants/textType.tsx";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { href, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Accueil() {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const SOCIAL_ICONS = [
-    { src: "/images/facebook.png", alt: "Facebook", label: "Facebook", href:"https://www.facebook.com/aldy.mayoubou" },
-    { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn", href:"https://www.linkedin.com/in/mayoubou/" }
+    { src: "/images/facebook.png", alt: "Facebook", label: "Facebook"},
+    { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn" }
   ];
   
   const [isOpen, setIsOpen] = useState(false);
