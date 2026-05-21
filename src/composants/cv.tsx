@@ -313,7 +313,7 @@ export default function CV() {
           <div className="mb-8">
             <p className="text-white font-bold text-lg text-center mb-4">Frameworks</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              {['React js', 'TailwindCSS', 'Express js', 'Flutter'].map((skill, index) => (
+              {['React js', 'TailwindCSS', 'Express js', 'React Native' , 'Laravel'].map((skill, index) => (
                 <span 
                   key={index}
                   className="skill-item border border-[#064eb9] text-[#064eb9] px-4 py-2 rounded-lg font-medium bg-[#02090e] hover:bg-[#064eb9] hover:text-white transition-colors duration-300"

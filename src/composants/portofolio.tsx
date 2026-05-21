@@ -5,6 +5,7 @@ import TextType from "../composants/textType.tsx";
 import { Menu, X, Github, ExternalLink, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
+
 // Enregistrer le plugin ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,6 +47,23 @@ const PROJECTS = [
       " Affichage dynamique des véhicules disponibles",
       "Messagerie instantanée",
       "Système d'évaluations"
+    ]
+  },
+  {
+    id:3,
+    title: "Nexa - Hub de formation professionnelle",
+    description: "Plateforme de formation en ligne pour les professionnels. Cours interactifs, suivi personnalisé et communauté d'apprentissage dynamique.",
+    longDescription: "Nexa a été conçue pour répondre aux besoins de formation continue des professionnels. La plateforme propose des cours interactifs, des webinaires en direct, et un système de mentorat pour accompagner les apprenants dans leur développement professionnel.",
+    technologies:["Next.js", "TailwindCSS", "Prisma", "NEON"],
+    image:"/images/nexa.png",
+    category:"Développement web",
+    githubUrl:"https://github.com/Aldy150/Nexa",
+    client:"Nexa Formation",
+    date:"2026",
+    features:[
+      "Cours interactifs avec quiz intégrés",
+      "Webinaires en direct avec experts",
+      "Système de mentorat personnalisé"
     ]
   }
 ];
@@ -281,7 +299,7 @@ export default function Portfolio() {
                 </a>
               </li>
               <li>
-                <Link className="font-bold hover:text-[#064eb9] transition-colors relative group" to="/cv">
+                <Link className="font-bold hover:text-[#064eb9] transition-colors relative group" to="/cv.tsx">
                   CV
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#064eb9] transition-all group-hover:w-full"></span>
                 </Link>
@@ -290,7 +308,7 @@ export default function Portfolio() {
           </div>
 
           {/* BOUTON CONTACT */}
-          <Link to="/contact" className="hidden lg:block">
+          <Link to="/cv.tsx" className="hidden lg:block">
             <button 
               className="bg-[#064eb9] text-white px-6 py-2 rounded-lg font-bold hover:bg-white hover:text-[#064eb9] transform hover:scale-105 transition-all duration-300 shadow-lg shadow-[#064eb9]/25"
               aria-label="Contactez-moi"

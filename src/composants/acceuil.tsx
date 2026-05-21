@@ -4,15 +4,15 @@ import TextType from "../composants/textType.tsx";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Link } from "react-router-dom";
+import { href, Link } from "react-router-dom";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Accueil() {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const SOCIAL_ICONS = [
-    { src: "/images/facebook.png", alt: "Facebook", label: "Facebook" },
-    { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn" }
+    { src: "/images/facebook.png", alt: "Facebook", label: "Facebook", href:"https://www.facebook.com/aldy.mayoubou" },
+    { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn", href:"https://www.linkedin.com/in/mayoubou/" }
   ];
   
   const [isOpen, setIsOpen] = useState(false);
@@ -86,8 +86,8 @@ export default function Accueil() {
   const Images3: {imgage: string; description: string}[] = [
     { imgage: "/images/TS.jpg", description: "Typescript" },
     {imgage:"/images/Python logo.jpeg", description: "Python"},
-    {imgage:"/images/nestjs.jpeg", description: "Nest js"},
-    {imgage:"/images/FastAPI.png",  description: "FastAPI"},
+    {imgage:"/images/Laravel-Logo.wine.png", description: "Laravel"},
+  
   ];
 
   const cards: {texte: string; objet: string; btn: string; Image: string}[] = [
@@ -161,7 +161,7 @@ export default function Accueil() {
             
           </div>
         {/* BOUTON BLEU "CONTACTEZ-MOI" - Desktop seulement */}
-<Link to="/contact" className="hidden lg:block">
+<Link to="/cv.tsx" className="hidden lg:block">
   <button 
     className="bg-[#064eb9] text-white px-6 py-2 rounded-lg font-bold hover:bg-white hover:text-[#064eb9] transform hover:scale-105 transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
     aria-label="Contactez-moi"
@@ -294,6 +294,7 @@ export default function Accueil() {
                 src={src}
                 alt={`Icone ${idx}`}
                 className="w-10 h-10 border border-[#064eb9] rounded-full p-2 cursor-pointer hover:bg-[#064eb9] transition-colors"
+                
               />
             ))}
           </div>
