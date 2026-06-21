@@ -1,397 +1,366 @@
-
-import SplitText from "../composants/splitText.tsx";
-import { MapPin, Mail, Phone, X, Menu, Download } from "lucide-react";
+import { MapPin, Mail, Phone, X, Menu, Download, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Enregistrer le plugin ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
+/* ── Data ── */
+const SOCIAL_ICONS = [
+  { src: "/images/facebook.png", alt: "Facebook", label: "Facebook" },
+  { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn" },
+];
+
+const FRAMEWORKS = ["React JS", "TailwindCSS", "Express JS", "React Native", "Laravel", "Next.js"];
+const LANGAGES   = ["JavaScript", "TypeScript", "Node JS", "Php", "Python"];
+const DATABASES  = ["PostgreSQL", "MySQL", "SQL"];
+const TOOLS      = ["Git & GitHub", "Docker", "Figma"];
+
+const FORMATION = [
+  { periode: "2022 – 2023", diplome: "Baccalauréat scientifique", ecole: "Cours marianiste Sainte Rita" },
+  { periode: "2023 – 2026", diplome: "Licence appliquée en Analyse et programmation", ecole: "Institut d'Enseignement Professionnel Appliqué" },
+];
+
+const PROJETS = [
+  { titre: "Site de réservation restaurant", description: "Gestion des réservations, affichage des menus et interface responsive.", stack: "HTML · CSS · JavaScript · PHP · Tailwind CSS" },
+  { titre: "Site pour agence de graphisme", description: "Interface moderne, présentation des services et portfolios interactifs.", stack: "React JS · JavaScript · Tailwind CSS · Express JS" },
+];
+
+/* ── Animated section ── */
+function FadeSection({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.cssText = "opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;";
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setTimeout(() => { el.style.opacity = "1"; el.style.transform = "translateY(0)"; }, delay);
+        obs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [delay]);
+  return <div ref={ref} className={className}>{children}</div>;
+}
+
+/* ── Skill tag ── */
+function SkillTag({ label }: { label: string }) {
+  return (
+    <span className="border border-[#064eb9]/40 text-[#4d8ff5] text-sm px-4 py-1.5 rounded-lg bg-[#064eb9]/10 hover:bg-[#064eb9] hover:text-white hover:border-[#064eb9] transition-all duration-300 cursor-default font-medium">
+      {label}
+    </span>
+  );
+}
+
+/* ── Main ── */
 export default function CV() {
-  const icones: string[] = [
-    "/images/facebook.png",
-    "/images/linkedin.png",
-  ];
-  
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Animation d'entrée pour chaque section
-    sectionRefs.current.forEach((section, index) => {
-      if (!section) return;
-      
-      gsap.fromTo(section, 
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: index * 0.2,
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse",
-          }
-        }
-      );
-    });
-
-    // Animation des compétences (effet de remplissage)
-    const skills = gsap.utils.toArray('.skill-item');
-    skills.forEach((skill: any, index) => {
-      gsap.fromTo(skill, 
-        { scale: 0.8, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.5,
-          delay: index * 0.1,
-          scrollTrigger: {
-            trigger: skill,
-            start: "top 90%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    });
-
-    // Animation de la photo de profil
-    gsap.fromTo(".profile-image", 
-      { scale: 0, rotation: -180 },
-      { 
-        scale: 1, 
-        rotation: 0, 
-        duration: 1.5, 
-        ease: "elastic.out(1, 0.5)" 
-      }
+    gsap.fromTo(".profile-image",
+      { scale: 0.7, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1, ease: "back.out(1.4)", delay: 0.2 }
     );
-
-    // Animation des icônes de contact
-    gsap.fromTo(".contact-icon", 
-      { y: -20, opacity: 0 },
-      { 
-        y: 0, 
-        opacity: 1, 
-        duration: 0.8, 
-        stagger: 0.2,
-        delay: 1.5
-      }
+    gsap.fromTo(".hero-text",
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, delay: 0.5 }
     );
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
+  // Bloquer le scroll quand le drawer est ouvert
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
   return (
-    <div className="bg-[#070606] min-h-screen" ref={containerRef}>
-      {/* Navigation */}
-      <header className="flex flex-col justify-between items-center p-3 shadow-md shadow-[#064eb9] bg-[#02090e] sticky top-0 z-50">
-        <div className="flex justify-between items-center w-full p-2">
-          {/* LOGO */}
-          <h1 className="text-white font-bold text-xl">Aldy Mayoubou</h1>
+    <>
+      <style>{`
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes drawerIn  { from{transform:translateX(100%)} to{transform:translateX(0)} }
+        @keyframes overlayIn { from{opacity:0} to{opacity:1} }
+        @keyframes pulse-ring {
+          0%  { box-shadow:0 0 0 0 rgba(6,78,185,0.4); }
+          70% { box-shadow:0 0 0 14px rgba(6,78,185,0); }
+          100%{ box-shadow:0 0 0 0 rgba(6,78,185,0); }
+        }
+        .avatar-pulse { animation: pulse-ring 2.8s ease-out infinite; }
+        .drawer  { animation: drawerIn  0.32s cubic-bezier(0.4,0,0.2,1) forwards; }
+        .overlay { animation: overlayIn 0.32s ease forwards; }
+      `}</style>
 
-          {/* MENU DESKTOP */}
-          <div className="hidden lg:flex items-center gap-6">
-            <ul className="flex gap-6 text-white text-md">
-              <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/acceuil.tsx">Accueil</Link></li>
-           <li>
-    <a 
-      href="#competences"
-      className="font-bold text-white text-md hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200"
-      onClick={(e) => {
-        e.preventDefault();
-        document.getElementById('competences')?.scrollIntoView({ behavior: 'smooth' });
-      }}
-    >
-      A propos de moi
-    </a>
-  </li>
- <li>
-    <a 
-      href="#services"
-      className="font-bold text-white text-md hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200"
-      onClick={(e) => {
-        e.preventDefault();
-        document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-      }}
-    >
-      Services
-    </a>
-  </li>
-              <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/portofolio.tsx">Portofolio</Link></li>
-              <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/cv.tsx">CV</Link></li>
+      <div className="bg-[#070606] min-h-screen" ref={containerRef}>
+
+        {/* ── Navigation ── */}
+        <header id="main-header" className="sticky top-0 z-50 bg-[#02090e]/95 backdrop-blur-sm border-b border-[#064eb9]/20">
+          <div className="flex justify-between items-center px-4 lg:px-12 py-3 max-w-7xl mx-auto">
+            <Link to="/" className="text-white font-bold text-xl tracking-tight">
+              Aldy <span className="text-[#064eb9]">Mayoubou</span>
+            </Link>
+
+            <ul className="hidden lg:flex gap-8 text-sm list-none m-0 p-0">
+              <li><Link to="/" className="font-bold text-white hover:text-[#4d8ff5] transition-colors">Accueil</Link></li>
+              <li><Link to="/portofolio.tsx" className="font-bold text-white hover:text-[#4d8ff5] transition-colors">Portfolio</Link></li>
+              <li><Link to="/cv.tsx" className="font-bold text-[#4d8ff5]">CV</Link></li>
             </ul>
-            
-            {/* BOUTON BLEU "CONTACTEZ-MOI" */}
-            
-          </div>
-          <button 
-              className="bg-[#064eb9] text-white px-6 py-2 rounded-lg lg:flex hidden font-bold hover:bg-white hover:text-[#064eb9] transform hover:scale-105 transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-              aria-label="Contactez-moi"
+
+            <button
+              onClick={() => window.open("https://mail.google.com/mail/?view=cm&fs=1&to=aldymayoubou6@gmail.com", "_blank")}
+              className="hidden lg:flex items-center gap-2 bg-[#064eb9] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-white hover:text-[#064eb9] transform hover:scale-105 transition-all duration-200"
             >
               Contactez-moi
             </button>
 
-          {/* BURGER (MOBILE) */}
-          <div className="lg:hidden">
-            {isOpen ? (
-              <X className="text-white text-2xl cursor-pointer" onClick={() => setIsOpen(false)} />
-            ) : (
-              <Menu className="text-white text-2xl cursor-pointer" onClick={() => setIsOpen(true)} />
-            )}
+            {/* Burger button */}
+            <button
+              className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-lg border border-[#064eb9]/30 bg-[#064eb9]/10 hover:bg-[#064eb9]/20 transition-colors"
+              onClick={() => setIsOpen(true)}
+              aria-label="Ouvrir le menu"
+            >
+              <span className="absolute block w-5 h-0.5 bg-white" style={{ transform: "translateY(-5px)" }} />
+              <span className="absolute block w-5 h-0.5 bg-white" />
+              <span className="absolute block w-5 h-0.5 bg-white" style={{ transform: "translateY(5px)" }} />
+            </button>
           </div>
-        </div>
+        </header>
 
-        {/* MENU MOBILE */}
+        {/* ── Drawer mobile (slide depuis la droite) ── */}
         {isOpen && (
-          <div className="lg:hidden bg-[#111] shadow-lg w-full">
-            <ul className="flex flex-col gap-4 text-white text-md p-4">
-          <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/acceuil.tsx">Accueil</Link></li>
-           <li>
-    <a 
-      href="#competences"
-      className="font-bold text-white text-md hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200"
-      onClick={(e) => {
-        e.preventDefault();
-        document.getElementById('competences')?.scrollIntoView({ behavior: 'smooth' });
-      }}
-    >
-      A propos de moi
-    </a>
-  </li>
- <li>
-    <a 
-      href="#services"
-      className="font-bold text-white text-md hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200"
-      onClick={(e) => {
-        e.preventDefault();
-        document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-      }}
-    >
-      Services
-    </a>
-  </li>
-              <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/portofolio.tsx">Portofolio</Link></li>
-              <li><Link className="font-bold text-white text-md  hover:border-b-4 border-b-0 border-[#064eb9] inline-block hover:rounded-sm cursor-pointer hover:transition-all hover:duration-200" to="/cv.tsx">CV</Link></li>
-            </ul>
-             <button 
-              className="bg-[#064eb9] text-white px-6 py-2 rounded-lg font-bold hover:bg-white hover:text-[#064eb9] transform hover:scale-105 transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-              aria-label="Contactez-moi"
-            >
-              Contactez-moi
-            </button>
-          </div>
-          
+          <>
+            {/* Overlay sombre */}
+            <div
+              className="overlay fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm lg:hidden"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Panel */}
+            <div className="drawer fixed top-0 right-0 z-[70] h-full w-72 bg-[#0d1117] border-l border-[#064eb9]/25 flex flex-col lg:hidden">
+              {/* Header du drawer */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#064eb9]/15">
+                <span className="text-white font-bold text-lg">
+                  Aldy <span className="text-[#064eb9]">Mayoubou</span>
+                </span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-9 h-9 rounded-lg border border-[#064eb9]/30 bg-[#064eb9]/10 flex items-center justify-center text-white hover:bg-[#064eb9]/25 transition-colors"
+                  aria-label="Fermer le menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Links */}
+              <nav className="flex-1 px-3 py-6">
+                <ul className="flex flex-col gap-1 list-none m-0 p-0">
+                  {[
+                    { label: "Accueil", to: "/" },
+                    { label: "Portfolio", to: "/portofolio.tsx" },
+                    { label: "CV", to: "/cv.tsx", active: true },
+                  ].map(({ label, to, active }) => (
+                    <li key={label}>
+                      <Link
+                        to={to}
+                        className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+                          active
+                            ? "bg-[#064eb9]/15 text-[#4d8ff5] border border-[#064eb9]/30"
+                            : "text-white hover:bg-[#064eb9]/10 hover:text-[#4d8ff5]"
+                        }`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {label}
+                        <ArrowUpRight size={14} className="text-gray-600" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              {/* Footer du drawer */}
+              <div className="px-5 py-6 border-t border-[#064eb9]/15">
+                <button
+                  onClick={() => { setIsOpen(false); window.open("https://mail.google.com/mail/?view=cm&fs=1&to=aldymayoubou6@gmail.com", "_blank"); }}
+                  className="w-full bg-[#064eb9] text-white py-3 rounded-xl text-sm font-bold hover:bg-white hover:text-[#064eb9] transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  Contactez-moi
+                  <ArrowUpRight size={14} />
+                </button>
+                <div className="flex justify-center gap-3 mt-4">
+                  {SOCIAL_ICONS.map((icon, idx) => (
+                    <a key={idx} href="#" aria-label={icon.label}>
+                      <img src={icon.src} alt={icon.alt} className="w-8 h-8 border border-[#064eb9]/40 rounded-full p-1.5 hover:bg-[#064eb9] transition-colors" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
         )}
-      </header>
 
-      {/* Section Hero */}
-      <div className="relative h-screen flex flex-col overflow-hidden">
-        {/* Arrière-plan assombri avec animation */}
-        <div
-          className="absolute inset-0 bg-[url('/images/bg.jpg')] bg-cover bg-center"
-          style={{ filter: 'brightness(20%)' }}
-        ></div>
+        {/* ── Hero ── */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/images/bg.jpg')] bg-cover bg-center" style={{ filter: "brightness(12%) saturate(150%)" }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#070606]/40 to-[#070606]" />
 
-        {/* Contenu au premier plan */}
-        <div className="relative flex justify-center items-center h-screen flex-col">
-          <img
-            src="/images/Mon image.png"
-            alt="Aldy Mayoubou"
-            className="rounded-full border-4 border-[#064eb9] shadow-lg shadow-[#064eb9] w-60 h-60 md:w-80 md:h-80 profile-image"
-          />
-          <div className="flex flex-col gap-5 justify-center items-center mt-8">
-            <div>
-              <SplitText
-                text="Aldy Mayoubou"
-                tag="h1"
-                className="text-2xl md:text-3xl font-bold text-white"
-                delay={100}
-                duration={0.6}
-                splitType="chars"
-                from={{ opacity: 0, y: 40 }}
-                to={{ opacity: 1, y: 0 }}
-              /> 
+          <div className="relative flex flex-col items-center text-center px-4 gap-5">
+            <div className="avatar-pulse rounded-full mb-2">
+              <img
+                src="/images/Mon image.png"
+                alt="Aldy Mayoubou"
+                className="profile-image w-48 h-48 md:w-60 md:h-60 rounded-full border-4 border-[#064eb9] object-cover"
+              />
             </div>
-            <div>
-              <button className="bg-[#064eb9] text-white p-2 border border-[#064eb9] rounded-lg text-sm font-bold px-4 py-2 hover:bg-white hover:text-[#064eb9] transition-colors duration-300">
-                Développeur full-stack
-              </button>
+
+            <h1 className="hero-text text-3xl md:text-4xl font-bold text-white tracking-tight">
+              Aldy <span className="text-[#064eb9]">Mayoubou</span>
+            </h1>
+
+            <span className="hero-text inline-flex items-center gap-2 bg-[#064eb9]/15 border border-[#064eb9]/40 text-[#4d8ff5] text-sm font-bold px-5 py-2 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#064eb9] animate-pulse" />
+              Software Product Developer
+            </span>
+
+            <div className="hero-text flex flex-col md:flex-row gap-4 md:gap-8 mt-2">
+              {[
+                { icon: <Mail size={16} />, text: "aldymayoubou6@gmail.com" },
+                { icon: <MapPin size={16} />, text: "Brazzaville, Congo" },
+                { icon: <Phone size={16} />, text: "+242 06 412 3588" },
+              ].map(({ icon, text }, i) => (
+                <div key={i} className="flex items-center gap-2 text-gray-300 text-sm">
+                  <span className="text-[#064eb9]">{icon}</span>
+                  {text}
+                </div>
+              ))}
             </div>
-            <div className="flex flex-col md:flex-row gap-6 md:gap-10 mt-6">
-              <div className="flex gap-2 items-center contact-icon">
-                <Mail className="text-[#064eb9]"/>
-                <p className="text-white text-sm md:text-lg font-bold">aldymayoubou6@gmail.com</p>
-              </div>
-              <div className="flex gap-2 items-center contact-icon">
-                <MapPin className="text-[#064eb9]"/>
-                <p className="text-white text-sm md:text-lg font-bold">75, bis Rue Ngampiema</p>
-              </div>
-              <div className="flex gap-2 items-center contact-icon">
-                <Phone className="text-[#064eb9]"/>
-                <p className="text-white text-sm md:text-lg font-bold">+242 06 412 3588</p>
-              </div>
-            </div>
-            <button className="mt-6 bg-[#064eb9] text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-white hover:text-[#064eb9] transition-colors duration-300 contact-icon">
-              <Download size={20} />
+
+            <button className="hero-text mt-2 flex items-center gap-2 bg-[#064eb9] text-white px-7 py-3 rounded-lg font-bold text-sm hover:bg-white hover:text-[#064eb9] transition-all duration-300 transform hover:scale-105">
+              <Download size={16} />
               Télécharger mon CV
             </button>
           </div>
-        </div>
+        </section>
+
+        {/* ── Contenu principal ── */}
+        <section className="py-20 px-6 lg:px-16 max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-16">
+
+            {/* Colonne gauche */}
+            <div className="flex-1 flex flex-col gap-14">
+              <FadeSection>
+                <h2 className="text-white font-bold text-xl mb-4 flex items-center gap-3">
+                  <span className="w-6 h-0.5 bg-[#064eb9] rounded-full" />
+                  À propos de moi
+                </h2>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Je suis Aldy Mayoubou, Software Product Developper spécialisé en React JS, Node JS, Flutter et Python.
+                  Je crée des applications web, mobiles et desktop performantes et adaptées aux besoins des utilisateurs.
+                  Rigoureux sur l'expérience utilisateur, je cherche toujours à proposer des solutions fluides et maintenables.
+                </p>
+              </FadeSection>
+
+              <FadeSection delay={100}>
+                <h2 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
+                  <span className="w-6 h-0.5 bg-[#064eb9] rounded-full" />
+                  Formation
+                </h2>
+                <div className="flex flex-col gap-6 pl-4">
+                  {FORMATION.map((f, i) => (
+                    <div key={i} className="relative pl-4 border-l border-[#064eb9]/25">
+                      <span className="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-[#064eb9] border-2 border-[#070606]" />
+                      <p className="text-xs text-[#4d8ff5] font-bold mb-1">{f.periode}</p>
+                      <p className="text-white font-bold text-sm mb-0.5">{f.diplome}</p>
+                      <p className="text-gray-500 text-xs">{f.ecole}</p>
+                    </div>
+                  ))}
+                </div>
+              </FadeSection>
+
+              <FadeSection delay={200}>
+                <h2 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
+                  <span className="w-6 h-0.5 bg-[#064eb9] rounded-full" />
+                  Projets personnels
+                </h2>
+                <div className="flex flex-col gap-5">
+                  {PROJETS.map((p, i) => (
+                    <div key={i} className="bg-[#02090e] border border-[#064eb9]/20 rounded-xl p-5 hover:border-[#064eb9]/50 transition-colors">
+                      <p className="text-white font-bold text-sm mb-1.5">{p.titre}</p>
+                      <p className="text-gray-400 text-xs leading-relaxed mb-3">{p.description}</p>
+                      <p className="text-[#4d8ff5] text-xs font-medium">{p.stack}</p>
+                    </div>
+                  ))}
+                </div>
+              </FadeSection>
+            </div>
+
+            {/* Séparateur */}
+            <div className="hidden lg:block w-px bg-gradient-to-b from-transparent via-[#064eb9]/30 to-transparent" />
+
+            {/* Colonne droite */}
+            <div className="flex-1 flex flex-col gap-10">
+              <FadeSection delay={150}>
+                <h2 className="text-white font-bold text-xl mb-8 flex items-center gap-3">
+                  <span className="w-6 h-0.5 bg-[#064eb9] rounded-full" />
+                  Compétences & outils
+                </h2>
+                {[
+                  { label: "Frameworks", items: FRAMEWORKS },
+                  { label: "Langages", items: LANGAGES },
+                  { label: "Bases de données", items: DATABASES },
+                  { label: "Outils", items: TOOLS },
+                ].map(({ label, items }, gi) => (
+                  <div key={gi} className="mb-8">
+                    <p className="text-gray-500 text-xs uppercase tracking-widest font-bold mb-3">{label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((item) => <SkillTag key={item} label={item} />)}
+                    </div>
+                  </div>
+                ))}
+              </FadeSection>
+
+              <FadeSection delay={300}>
+                <div className="bg-[#02090e] border border-[#064eb9]/25 rounded-2xl p-6 text-center">
+                  <p className="text-white font-bold text-lg mb-2">Travaillons ensemble</p>
+                  <p className="text-gray-400 text-sm mb-5">Vous avez un projet ? Discutons-en.</p>
+                  <button
+                    onClick={() => window.open("https://mail.google.com/mail/?view=cm&fs=1&to=aldymayoubou6@gmail.com&su=Discussion%20projet", "_blank")}
+                    className="w-full bg-[#064eb9] text-white py-3 rounded-lg text-sm font-bold hover:bg-white hover:text-[#064eb9] transition-all duration-300 hover:scale-105 transform flex items-center justify-center gap-2"
+                  >
+                    M'écrire un message
+                    <ArrowUpRight size={14} />
+                  </button>
+                </div>
+              </FadeSection>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Footer ── */}
+        <footer className="py-12 px-6 lg:px-20 bg-[#02090e] border-t border-[#064eb9]/15">
+          <div className="max-w-6xl mx-auto text-center">
+            <h2 className="text-[#064eb9] text-xl font-bold mb-1">Aldy Mayoubou</h2>
+            <p className="text-gray-500 text-sm mb-6">Software Product Developer</p>
+            <div className="flex justify-center gap-4 mb-8">
+              {SOCIAL_ICONS.map((icon, idx) => (
+                <div key={idx} className="group relative">
+                  <a href="#" className="block" aria-label={`Visiter mon ${icon.label}`}>
+                    <img src={icon.src} alt={icon.alt} className="w-9 h-9 border border-[#064eb9]/40 rounded-full p-1.5 transition-all duration-300 group-hover:bg-[#064eb9] group-hover:border-[#064eb9] group-hover:scale-110" />
+                  </a>
+                  <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs bg-gray-800 px-2 py-0.5 rounded whitespace-nowrap">
+                    {icon.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-gray-800 pt-6">
+              <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Aldy Mayoubou. Tous droits réservés.</p>
+            </div>
+          </div>
+        </footer>
       </div>
-
-      {/* Section Contenu Principal */}
-      <div className="flex flex-col lg:flex-row justify-between px-6 py-12 max-w-6xl mx-auto">
-        {/* Colonne de gauche */}
-        <div 
-          className="flex flex-col lg:w-1/2 p-5"
-          ref={(el: HTMLDivElement | null) => {
-            if (el) sectionRefs.current[0] = el;
-          }}
-        >
-          <h1 className="text-white text-2xl font-bold mb-4">À propos de moi</h1>
-          <p className="text-white text-md mb-8 leading-relaxed">
-            Je suis Aldy Mayoubou, développeur full-stack spécialisé en React JS, Node JS, Flutter et Python. 
-            Je crée des applications web, mobiles et desktop performantes et adaptées aux besoins des utilisateurs.
-          </p>
-          
-          <h1 className="text-white text-2xl font-bold mb-4">Formation</h1>
-          <div className="mb-6">
-            <p className="text-white text-md mb-2">
-              <span className="text-[#064eb9] mr-2">⬤</span> 2022-2023: Baccalauréat scientifique
-            </p>
-            <p className="text-gray-300 text-sm">Cours marianiste Sainte Rita</p>
-          </div>
-          <div className="mb-8">
-            <p className="text-white text-md mb-2">
-              <span className="text-[#064eb9] mr-2">⬤</span> 2023-2026: Licence appliquée en Analyse et programmation
-            </p>
-            <p className="text-gray-300 text-sm">Institut d'Enseignement Professionnel Appliqué</p>
-          </div>
-          
-          <h1 className="text-white text-2xl font-bold mb-4">Projets personnels</h1>
-          <div className="mb-6">
-            <p className="text-white text-md mb-2">
-              <span className="text-[#064eb9] mr-2">⬤</span> Conception et développement d'un site de réservation pour un restaurant.
-            </p>
-            <p className="text-gray-300 text-sm">
-              Gestion des réservations en ligne, affichage des menus et interface utilisateur responsive.
-              Technologies utilisées : HTML, CSS, JavaScript, PHP, Tailwind CSS.
-            </p>
-          </div>
-          <div>
-            <p className="text-white text-md mb-2">
-              <span className="text-[#064eb9] mr-2">⬤</span> Conception et développement d'un site pour une agence de graphisme.
-            </p>
-            <p className="text-gray-300 text-sm">
-              Interface moderne et responsive, présentation des services et portfolios interactifs.
-              Technologies utilisées : React JS, JavaScript, Tailwind CSS et Express JS.
-            </p>
-          </div>
-        </div>
-
-        {/* Séparateur */}
-        <div className="hidden lg:block border-l border-gray-700 mx-8"></div>
-
-        {/* Colonne de droite - Compétences */}
-        <div 
-          className="flex flex-col lg:w-1/2 p-5"
-          ref={(el: HTMLDivElement | null) => {
-            if (el) sectionRefs.current[1] = el;
-          }}
-        >
-          <h1 className="text-white text-2xl font-bold mb-6 text-center">Compétences et outils</h1>
-          
-          <div className="mb-8">
-            <p className="text-white font-bold text-lg text-center mb-4">Frameworks</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {['React js', 'TailwindCSS', 'Express js', 'React Native' , 'Laravel'].map((skill, index) => (
-                <span 
-                  key={index}
-                  className="skill-item border border-[#064eb9] text-[#064eb9] px-4 py-2 rounded-lg font-medium bg-[#02090e] hover:bg-[#064eb9] hover:text-white transition-colors duration-300"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          <div className="mb-8">
-            <p className="text-white font-bold text-lg text-center mb-4">Langages</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {['JavaScript', 'TypeScript', 'Node js', 'Dart', 'Python'].map((skill, index) => (
-                <span 
-                  key={index}
-                  className="skill-item border border-[#064eb9] text-[#064eb9] px-4 py-2 rounded-lg font-medium bg-[#02090e] hover:bg-[#064eb9] hover:text-white transition-colors duration-300"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          <div className="mb-8">
-            <p className="text-white font-bold text-lg text-center mb-4">Bases de données</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {['PostgreSQL', 'SQL', 'MySQL'].map((skill, index) => (
-                <span 
-                  key={index}
-                  className="skill-item border border-[#064eb9] text-[#064eb9] px-4 py-2 rounded-lg font-medium bg-[#02090e] hover:bg-[#064eb9] hover:text-white transition-colors duration-300"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          <div>
-            <p className="text-white font-bold text-lg text-center mb-4">Outils</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {['Git & Github'].map((skill, index) => (
-                <span 
-                  key={index}
-                  className="skill-item border border-[#064eb9] text-[#064eb9] px-4 py-2 rounded-lg font-medium bg-[#02090e] hover:bg-[#064eb9] hover:text-white transition-colors duration-300"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="bg-[#02090e] py-12 mt-12">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-[#064eb9] text-2xl font-bold mb-4">Aldy Mayoubou</h1>
-          <p className="text-white text-lg mb-8">Développeur full-stack</p>
-          
-          <div className="flex justify-center gap-6 mb-8">
-            {icones.map((src, idx) => (
-              <img 
-                key={idx} 
-                src={src} 
-                alt={`Icone ${idx}`} 
-                className="w-10 h-10 border border-[#064eb9] rounded-full p-2 cursor-pointer hover:bg-[#064eb9] transition-colors duration-300" 
-              />
-            ))}
-          </div>
-          
-          <div className="border-t border-gray-700 pt-8">
-            <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Aldy Mayoubou. Tous droits réservés.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
