@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Menu, X, Github, ExternalLink, ChevronDown, ArrowUpRight, Home, FolderKanban, FileUser, Send } from "lucide-react";
+import {  X, Github, ExternalLink, ChevronDown, ArrowUpRight, Home, FolderKanban, FileUser, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);

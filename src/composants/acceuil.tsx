@@ -1,4 +1,4 @@
-import { Rocket, Edit, Lightbulb, ArrowUpRight, Menu, X } from "lucide-react";
+import { Rocket, Edit, Lightbulb, ArrowUpRight, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

@@ -1,4 +1,4 @@
-import { MapPin, Mail, Phone, X, Menu, Download, ArrowUpRight } from "lucide-react";
+import { MapPin, Mail, Phone, X, Download, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
