@@ -256,9 +256,7 @@ export default function CV() {
                   À propos de moi
                 </h2>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Je suis Aldy Mayoubou, Software Product Developper spécialisé en React JS, Node JS, Flutter et Python.
-                  Je crée des applications web, mobiles et desktop performantes et adaptées aux besoins des utilisateurs.
-                  Rigoureux sur l'expérience utilisateur, je cherche toujours à proposer des solutions fluides et maintenables.
+                 Je suis Aldy Mayoubou Software Product Developer spécialisé dans la conception d'applications et de plateformes destinées aux entreprises. Mon objectif est de transformer des besoins métier complexes en produits numériques simples, performants et évolutifs. J'interviens sur l'ensemble du cycle de développement, de la conception à la mise en production, en m'appuyant sur React, TypeScript, Node.js, Laravel et PostgreSQL
                 </p>
               </FadeSection>
 
