@@ -203,7 +203,7 @@ export default function Accueil() {
                 <div className="flex justify-center gap-3 mt-4">
                   {SOCIAL_ICONS.map((icon, idx) => (
                     <a key={idx} href="#" aria-label={icon.label}>
-                      <img src={icon.url} alt={icon.alt} className="w-8 h-8 border border-[#064eb9]/40 rounded-full p-1.5 hover:bg-[#064eb9] transition-colors" />
+                      <img src={icon.src} alt={icon.alt} className="w-8 h-8 border border-[#064eb9]/40 rounded-full p-1.5 hover:bg-[#064eb9] transition-colors" />
                     </a>
                   ))}
                 </div>
