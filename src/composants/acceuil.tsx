@@ -28,8 +28,8 @@ function AnimatedHeading({
 }
 
 const SOCIAL_ICONS = [
-  { src: "/public/images/facebook.png", alt: "Facebook", label: "Facebook", url: "https://www.facebook.com/aldy.mayoubou" },
-  { src: "/public/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn", url: "https://www.linkedin.com/in/mayoubou/?locale=en" },
+  { src:  "/images/facebook.png", alt: "Facebook", label: "Facebook", url: "https://www.facebook.com/aldy.mayoubou" },
+  { src: "/images/linkedin.png", alt: "LinkedIn", label: "LinkedIn", url: "https://www.linkedin.com/in/mayoubou/?locale=en" },
 ];
 
 const objectifs = [
